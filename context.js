@@ -138,12 +138,13 @@ Namespace.prototype.runPromise = function runPromise(fn) {
     debug2('CONTEXT-runPromise BEFORE: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
   }
 
+  this.exit(context);
+
   return promise
     .then(result => {
       if (DEBUG_CLS_HOOKED) {
         debug2('CONTEXT-runPromise AFTER then: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
       }
-      this.exit(context);
       return result;
     })
     .catch(err => {
@@ -151,7 +152,6 @@ Namespace.prototype.runPromise = function runPromise(fn) {
       if (DEBUG_CLS_HOOKED) {
         debug2('CONTEXT-runPromise AFTER catch: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
       }
-      this.exit(context);
       throw err;
     });
 };
