@@ -127,14 +127,17 @@ Namespace.prototype.runPromise = function runPromise(fn) {
   this.enter(context);
 
   let promise = fn(context);
+
   if (!promise || !promise.then || !promise.catch) {
     throw new Error('fn must return a promise.');
   }
 
   if (DEBUG_CLS_HOOKED) {
     debug2(' BEFORE runPromise: ' + this.name + ' uid:' + currentUid + ' len:' + this._set.length + ' ' +
-      util.inspect(context));
+    util.inspect(context));
   }
+
+  this.exit(context);
 
   return promise
     .then(result => {
@@ -142,7 +145,6 @@ Namespace.prototype.runPromise = function runPromise(fn) {
         debug2(' AFTER runPromise: ' + this.name + ' uid:' + currentUid + ' len:' + this._set.length + ' ' +
           util.inspect(context));
       }
-      this.exit(context);
       return result;
     })
     .catch(err => {
@@ -151,7 +153,6 @@ Namespace.prototype.runPromise = function runPromise(fn) {
         debug2(' AFTER runPromise: ' + this.name + ' uid:' + currentUid + ' len:' + this._set.length + ' ' +
           util.inspect(context));
       }
-      this.exit(context);
       throw err;
     });
 };
