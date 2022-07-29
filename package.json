@@ -1,6 +1,6 @@
 {
   "name": "@eliabecardoso/cls-hooked",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "CLS using AsyncWrap instead of async-listener - Node >= 4.7.0",
   "main": "index.js",
   "files": [
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jeff-lewis/cls-hooked.git"
+    "url": "https://github.com/eliabecardoso/cls-hooked.git"
   },
   "keywords": [
     "threading",
@@ -27,7 +27,8 @@
   "contributors": [
     "Tim Caswell <tim@creationix.com>",
     "Forrest L Norvell <ogd@aoaioxxysz.net>",
-    "Jeff Lewis <jlewis@streetconnect.com>"
+    "Jeff Lewis <jlewis@streetconnect.com>",
+    "Eliabe Cardoso <eliabe.cardoso@gmail.com>"
   ],
   "license": "BSD-2-Clause",
   "engineStrict": false,
