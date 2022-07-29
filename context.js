@@ -13,6 +13,14 @@ const DEBUG_CLS_HOOKED = process.env.DEBUG_CLS_HOOKED;
 
 let currentUid = -1;
 
+function catchHandler(exception) {
+  //handle exception(throw by user) which is not an error object.
+  //exception: null, undefined, string(when 'use strict') etc.
+  try {
+    exception[ERROR_SYMBOL] = context;
+  } catch (ex) {}
+}
+
 module.exports = {
   getNamespace: getNamespace,
   createNamespace: createNamespace,
@@ -29,6 +37,7 @@ function Namespace(name) {
   this.id = null;
   this._contexts = new Map();
   this._indent = 0;
+  this._hook = null;
 }
 
 Namespace.prototype.set = function set(key, value) {
@@ -97,10 +106,7 @@ Namespace.prototype.run = function run(fn) {
     fn(context);
     return context;
   } catch (exception) {
-    if (exception) {
-      exception[ERROR_SYMBOL] = context;
-    }
-    throw exception;
+    catchHandler(exception);
   } finally {
     if (DEBUG_CLS_HOOKED) {
       const triggerId = async_hooks.triggerAsyncId();
@@ -129,18 +135,13 @@ Namespace.prototype.runPromise = function runPromise(fn) {
   let context = this.createContext();
   this.enter(context);
 
-  let promise = fn(context);
-  if (!promise || !promise.then || !promise.catch) {
-    throw new Error('fn must return a promise.');
-  }
-
   if (DEBUG_CLS_HOOKED) {
     debug2('CONTEXT-runPromise BEFORE: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
   }
 
   this.exit(context);
 
-  return promise
+  return new Promise(resolve => resolve(fn(context)))
     .then(result => {
       if (DEBUG_CLS_HOOKED) {
         debug2('CONTEXT-runPromise AFTER then: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
@@ -148,11 +149,10 @@ Namespace.prototype.runPromise = function runPromise(fn) {
       return result;
     })
     .catch(err => {
-      err[ERROR_SYMBOL] = context;
+      catchHandler(err);
       if (DEBUG_CLS_HOOKED) {
         debug2('CONTEXT-runPromise AFTER catch: (' + this.name + ') currentUid:' + currentUid + ' len:' + this._set.length + ' ' + util.inspect(context));
       }
-      throw err;
     });
 };
 
@@ -171,10 +171,7 @@ Namespace.prototype.bind = function bindFactory(fn, context) {
     try {
       return fn.apply(this, arguments);
     } catch (exception) {
-      if (exception) {
-        exception[ERROR_SYMBOL] = context;
-      }
-      throw exception;
+      catchHandler(exception);
     } finally {
       self.exit(context);
     }
@@ -427,6 +424,8 @@ function createNamespace(name) {
 
   hook.enable();
 
+  namespace._hook = hook;
+
   process.namespaces[name] = namespace;
   return namespace;
 }
@@ -437,7 +436,16 @@ function destroyNamespace(name) {
   assert.ok(namespace, 'can\'t delete nonexistent namespace! "' + name + '"');
   assert.ok(namespace.id, 'don\'t assign to process.namespaces directly! ' + util.inspect(namespace));
 
-  process.namespaces[name] = null;
+  namespace._hook.disable();
+
+  /*
+  * Zeroing _contexts as heaviest part of Namespace
+  * In case our namespace is retained mistakenly, so
+  * at least we are releasing heaviest part
+  */
+  namespace._contexts = null;
+
+  delete process.namespaces[name];
 }
 
 function reset() {
