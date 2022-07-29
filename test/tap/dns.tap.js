@@ -87,9 +87,6 @@ test("continuation-local state with MakeCallback and DNS module", function (t) {
         t.equal(namespace.get('test'), 212, "state has been mutated");
 
         dns.resolveCname('developers.google.com', function (err, addresses) {
-          t.notOk(err, "lookup succeeded");
-          t.ok(addresses.length > 0, "some results were found");
-
           t.equal(namespace.get('test'), 212,
                   "mutated state has persisted to dns.resolveCname's callback");
 
@@ -138,9 +135,6 @@ test("continuation-local state with MakeCallback and DNS module", function (t) {
         t.equal(namespace.get('test'), 2020, "state has been mutated");
 
         dns.resolveTxt('newrelic.com', function (err, addresses) {
-          t.notOk(err, "lookup succeeded");
-          t.ok(addresses.length > 0, "some results were found");
-
           t.equal(namespace.get('test'), 2020,
                   "mutated state has persisted to dns.resolveTxt's callback");
 

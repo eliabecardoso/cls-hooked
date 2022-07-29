@@ -1,6 +1,6 @@
 {
-  "name": "cls-hooked",
-  "version": "4.3.0",
+  "name": "cls-hooked-async",
+  "version": "1.0.0",
   "description": "CLS using AsyncWrap instead of async-listener - Node >= 4.7.0",
   "main": "index.js",
   "files": [
@@ -45,6 +45,6 @@
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
     "superagent": "^5.1.2",
-    "tap": "^10.7.3"
+    "tap": "^16.3.0"
   }
 }

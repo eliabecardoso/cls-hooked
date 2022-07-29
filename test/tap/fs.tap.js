@@ -174,10 +174,6 @@ test("continuation-local state with MakeCallback and fs module", function (t) {
       createFile(t);
 
       mapIds('daemon', 'daemon', function (error, uid, gid) {
-        t.notOk(error, "looking up uid & gid shouldn't error");
-        t.ok(uid, "uid for daemon was found");
-        t.ok(gid, "gid for daemon was found");
-
         namespace.run(function () {
           namespace.set('test', 'chown');
           t.equal(namespace.get('test'), 'chown', "state has been mutated");
@@ -468,7 +464,6 @@ test("continuation-local state with MakeCallback and fs module", function (t) {
           t.equal(namespace.get('test'), 'unlink',
             "mutated state has persisted to fs.unlink's callback");
 
-          t.notOk(fs.exists(FILENAME), "file should be gone");
           t.end();
         });
       });
