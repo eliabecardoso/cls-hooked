@@ -189,9 +189,9 @@ whose calls originate from a callback passed to `namespace.run()` or
 Set a value on the current continuation context. Must be set within an active
 continuation chain started with `namespace.run()` or `namespace.bind()`.
 
-### namespace.get(key)
+### namespace.get(key?)
 
-* return: the requested value, or `undefined`
+* return: the requested value, `null` or `undefined`
 
 Look up a value on the current continuation context. Recursively searches from
 the innermost to outermost nested continuation context for a value associated

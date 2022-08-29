@@ -73,7 +73,7 @@ Namespace.prototype.get = function get(key) {
     debug2(indentStr + 'CONTEXT-GETTING KEY:' + key + '=' + this.active[key] + ' (' + this.name + ') currentUid:' + currentUid + ' active:' + util.inspect(this.active, {showHidden:true, depth:2, colors:true}));
     debug2(`${indentStr}CONTEXT-GETTING KEY: (${this.name}) ${key}=${this.active[key]} currentUid:${currentUid} asyncHooksCurrentId:${asyncHooksCurrentId} triggerId:${triggerId} len:${this._set.length} active:${util.inspect(this.active)}`);
   }
-  return this.active[key];
+  return key ? this.active[key] : this.active;
 };
 
 Namespace.prototype.createContext = function createContext() {

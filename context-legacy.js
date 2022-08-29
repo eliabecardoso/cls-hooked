@@ -70,7 +70,7 @@ Namespace.prototype.get = function get(key) {
     debug2('    GETTING KEY:' + key + '=' + this.active[key] + ' ' + this.name + ' uid:' + currentUid + ' active:' +
       util.inspect(this.active, true));
   }
-  return this.active[key];
+  return key ? this.active[key] : this.active;
 };
 
 Namespace.prototype.createContext = function createContext() {
