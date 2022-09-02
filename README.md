@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/cls-hooked.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@eliabecardoso/cls-hooked/)
+[![NPM](https://nodei.co/npm/cls-hooked.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@ehsc/cls-hooked/)
 
 **Note: this is a release that includes fixes made in this [PR](https://github.com/Jeff-Lewis/cls-hooked/pull/73) and [some other tweaks](https://github.com/Jeff-Lewis/cls-hooked/compare/master...eliabecardoso:cls-hooked:master).**
 
