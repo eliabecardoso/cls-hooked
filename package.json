@@ -1,6 +1,6 @@
 {
   "name": "@ehsc/cls-hooked",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLS using AsyncWrap instead of async-listener - Node >= 4.7.0",
   "main": "index.js",
   "files": [
